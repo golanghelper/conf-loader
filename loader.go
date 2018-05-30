@@ -19,7 +19,7 @@ func Unmarshal(envPrefix string, f *os.File, v interface{}) (e error) {
 	if f != nil && e == nil {
 		fContent, ferr := ioutil.ReadAll(f)
 		if ferr != nil {
-			return
+			return ferr
 		}
 
 		// check the file type
