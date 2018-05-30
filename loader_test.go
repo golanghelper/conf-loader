@@ -2,8 +2,8 @@ package conf_loader
 
 import (
 	"os"
-	"testing"
 	"reflect"
+	"testing"
 )
 
 func TestUnmarshal(t *testing.T) {
@@ -11,13 +11,13 @@ func TestUnmarshal(t *testing.T) {
 	// prepare test structures
 
 	type testOptionsConfig struct {
-		First string
+		First  string
 		Second string
 	}
 
 	type testConfig struct {
-		IntVal    int                    `json:"int_val" envconfig:"int_val" yaml:"int_val"`
-		StringVal string                 `json:"string_json" envconfig:"string_env" yaml:"string_yaml"`
+		IntVal    int                `json:"int_val" envconfig:"int_val" yaml:"int_val"`
+		StringVal string             `json:"string_json" envconfig:"string_env" yaml:"string_yaml"`
 		Options   *testOptionsConfig `json:"options" envconfig:"options" yaml:"options"`
 	}
 
@@ -40,62 +40,62 @@ func TestUnmarshal(t *testing.T) {
 		f         *os.File
 	}{
 		{
-			name: "env_without_file",
-			envPrefix:envPrefix,
+			name:      "env_without_file",
+			envPrefix: envPrefix,
 			expected: &testConfig{
-				IntVal:1,
-				StringVal:"test1",
-				Options: &testOptionsConfig {
-					First: "1",
+				IntVal:    1,
+				StringVal: "test1",
+				Options: &testOptionsConfig{
+					First:  "1",
 					Second: "test1",
 				},
 			},
 		},
 		{
-			name: "env_with_jsonfile",
-			envPrefix:envPrefix,
-			f:jsonFile(),
+			name:      "env_with_jsonfile",
+			envPrefix: envPrefix,
+			f:         jsonFile(),
 			expected: &testConfig{
-				IntVal:2,
-				StringVal:"test1",
-				Options: &testOptionsConfig {
-					First: "1",
+				IntVal:    2,
+				StringVal: "test1",
+				Options: &testOptionsConfig{
+					First:  "1",
 					Second: "test2",
 				},
 			},
 		},
 		{
-			name: "env_with_yamlfile",
-			envPrefix:envPrefix,
-			f:yamlFile(),
+			name:      "env_with_yamlfile",
+			envPrefix: envPrefix,
+			f:         yamlFile(),
 			expected: &testConfig{
-				IntVal:1,
-				StringVal:"test3",
-				Options: &testOptionsConfig {
+				IntVal:    1,
+				StringVal: "test3",
+				Options: &testOptionsConfig{
+					First:  "3",
+					Second: "test1",
+				},
+			},
+		},
+		{
+			name:      "jsonfile_without_env",
+			envPrefix: "unknown",
+			f:         jsonFile(),
+			expected: &testConfig{
+				IntVal: 2,
+				Options: &testOptionsConfig{
+					Second: "test2",
+				},
+			},
+		},
+		{
+			name:      "yamlfile_without_env",
+			envPrefix: "unknown",
+			f:         yamlFile(),
+			expected: &testConfig{
+				StringVal: "test3",
+				Options: &testOptionsConfig{
 					First: "3",
-					Second: "test1",
-				},
-			},
-		},
-		{
-			name: "jsonfile_without_env",
-			envPrefix:"unknown",
-			f: jsonFile(),
-			expected: &testConfig{
-				IntVal:2,
-				Options: &testOptionsConfig {
-					Second: "test2",
-				},
-			},
-		},
-		{
-			name: "yamlfile_without_env",
-			envPrefix:"unknown",
-			f: yamlFile(),
-			expected: &testConfig{
-				StringVal:"test3",
-				Options: &testOptionsConfig {
-					First:"3",
 				},
 			},
 		},

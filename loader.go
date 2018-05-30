@@ -1,11 +1,11 @@
 package conf_loader
 
 import (
-	"os"
-	"github.com/kelseyhightower/envconfig"
-	"io/ioutil"
 	"encoding/json"
 	"github.com/go-yaml/yaml"
+	"github.com/kelseyhightower/envconfig"
+	"io/ioutil"
+	"os"
 )
 
 // Unmarshal parses data from environment variables and a file (if defined)
